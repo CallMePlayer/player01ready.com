@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>🎮 Unlimited Games + No Games 🥓</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<meta name="color-scheme" content="light only" />
+		<meta name="description" content="ARE YOU READY?" />
+		<meta property="og:site_name" content="CallMePlayer" />
+		<meta property="og:title" content="Unlimited Games + No Games" />
+		<meta property="og:type" content="website" />
+		<meta property="og:description" content="ARE YOU READY?" />
+		<meta property="og:url" content="https://player01ready.com" />
+		<meta name="fediverse:creator" content="@CallMePlayer@norcal.social">
+		<meta property="og:image" content="https://player01ready.com/assets/images/games.png" />
+		<meta property="og:image:type" content="image/png" />
+		<meta property="og:image:width" content="825" />
+		<meta property="og:image:height" content="776" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:image" content="https://player01ready.com/assets/images/games.png" />
+		<link href="https://fonts.googleapis.com/css2?display=swap&family=Press+Start+2P:ital,wght@0,400;1,400" rel="stylesheet" type="text/css" />
+		<link rel="icon" type="image/jpg" href="assets/images/image01.jpg" />
+		<link rel="apple-touch-icon" type="image/jpg" href="assets/images/image01.jpg" />
+		<link rel="stylesheet" href="assets/main.css" />
+		<noscript><link rel="stylesheet" href="assets/noscript.css" /></noscript>
+		<style>
+			.responsive-image {
+				width: 100%;
+				max-width: 300px;
+				height: auto;
+				object-fit: cover;
+			}
+			.hover-image {
+				transition: transform 0.3s ease;
+			}
+			.hover-image:hover {
+				transform: scale(1.1);
+			}
+			.glow-image {
+				transition: box-shadow 0.3s ease;
+			}
+			.glow-image:hover {
+				box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
+			}
+			.frame {
+				position: relative;
+				z-index: 1;
+				display: inline-block;
+			}
+			.matrix-overlay {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: linear-gradient(transparent, rgba(0, 255, 0, 0.1), transparent);
+				animation: matrixRain 2s linear infinite;
+				pointer-events: none;
+				z-index: 2;
+				opacity: 0;
+				transition: opacity 0.3s ease;
+			}
+			.frame:hover .matrix-overlay {
+				opacity: 1;
+			}
+			.zoom-image {
+				transition: transform 0.5s ease;
+				will-change: transform;
+				position: relative;
+				z-index: 1;
+			}
+			.frame:hover .zoom-image {
+				transform: scale(1.1);
+			}
+			@keyframes matrixRain {
+				0% {
+					transform: translateY(-100%);
+				}
+				100% {
+					transform: translateY(100%);
+				}
+			}
+			.sound-control {
+				position: fixed;
+				bottom: 20px;
+				right: 20px;
+				background: rgba(0, 0, 0, 0.7);
+				padding: 10px;
+				border-radius: 5px;
+				cursor: pointer;
+				transition: all 0.3s ease;
+				z-index: 9999;
+				pointer-events: auto;
+			}
+			.sound-control:hover {
+				background: rgba(0, 0, 0, 0.9);
+			}
+			.tor-warning {
+				background-color: #ffeb3b;
+				color: #000;
+				padding: 15px;
+				border-radius: 8px;
+				margin: 20px 0;
+				text-align: center;
+			}
+			.hidden {
+				display: none;
+				opacity: 0;
+				transition: opacity 0.5s ease-in-out;
+			}
+			.visible {
+				display: block;
+				opacity: 1;
+			}
+			.trigger-image {
+				cursor: pointer;
+			}
+			.loading-title {
+				position: relative;
+				display: inline-block;
+				cursor: pointer;
+			}
+			
+			.loading-title::after {
+				content: '';
+				position: absolute;
+				bottom: -5px;
+				left: 0;
+				width: 0;
+				height: 4px;
+				background: linear-gradient(90deg, #00ff00, #00ff00);
+				transition: width 2s ease-in-out;
+			}
+			
+			.loading-title:hover::after {
+				width: 100%;
+			}
+			
+			.loading-title:hover::before {
+				content: 'Loading... 100%';
+				position: absolute;
+				top: 100%;
+				left: 50%;
+				transform: translateX(-50%);
+				font-size: 0.5em;
+				margin-top: 10px;
+				white-space: nowrap;
+				animation: loadingText 2s forwards;
+				opacity: 0;
+			}
+			
+			.player-glitch {
+				display: inline-block;
+				transition: all 0.3s ease;
+			}
+
+			.player-glitch:hover {
+				animation: glitch 0.5s infinite;
+				text-shadow: 
+					2px 2px 0 #ff0000,
+					-2px -2px 0 #00ff00,
+					2px -2px 0 #0000ff;
+			}
+
+			.ready-pulse {
+				display: inline-block;
+				transition: all 0.3s ease;
+			}
+
+			.ready-pulse:hover {
+				animation: pulse 1s infinite;
+				color: #ff00ff;
+			}
+
+			@keyframes pulse {
+				0% {
+					transform: scale(1);
+					opacity: 1;
+				}
+				50% {
+					transform: scale(1.2);
+					opacity: 0.8;
+				}
+				100% {
+					transform: scale(1);
+					opacity: 1;
+				}
+			}
+			
+			@keyframes loadingText {
+				0% {
+					content: 'Loading... 0%';
+					opacity: 1;
+				}
+				20% {
+					content: 'Loading... 20%';
+				}
+				40% {
+					content: 'Loading... 40%';
+				}
+				60% {
+					content: 'Loading... 60%';
+				}
+				80% {
+					content: 'Loading... 80%';
+				}
+				100% {
+					content: 'Loading... 100%';
+					opacity: 1;
+				}
+			}
+
+			.fade-container {
+				position: relative;
+				margin: 40px auto;
+				text-align: center;
+			}
+
+			@keyframes glitch {
+				0% {
+					transform: translate(0);
+					filter: hue-rotate(0deg);
+				}
+				25% {
+					transform: translate(-5px, 2px);
+					filter: hue-rotate(90deg);
+				}
+				50% {
+					transform: translate(5px, -2px);
+					filter: hue-rotate(180deg);
+				}
+				75% {
+					transform: translate(-3px, -1px);
+					filter: hue-rotate(270deg);
+				}
+				100% {
+					transform: translate(0);
+					filter: hue-rotate(360deg);
+				}
+			}
+
+			.fade-container::before {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background: linear-gradient(to bottom, 
+					rgba(0,0,0,1) 0%,
+					rgba(0,0,0,0) 10%,
+					rgba(0,0,0,0) 90%,
+					rgba(0,0,0,1) 100%
+				);
+				pointer-events: none;
+				z-index: 1;
+			}
+
+			.fade-container::after {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background: linear-gradient(to right, 
+					rgba(0,0,0,1) 0%,
+					rgba(0,0,0,0) 10%,
+					rgba(0,0,0,0) 90%,
+					rgba(0,0,0,1) 100%
+				);
+				pointer-events: none;
+				z-index: 1;
+			}
+
+			.fade-image {
+				position: relative;
+				max-width: 800px;
+				width: 100%;
+				height: auto;
+				display: block;
+				margin: 0 auto;
+				z-index: 0;
+				object-fit: contain;
+				transition: all 0.3s ease;
+			}
+
+			.fade-image:hover {
+				animation: glitch 0.5s infinite;
+				transform: scale(1.05);
+				filter: brightness(1.2) contrast(1.2);
+				box-shadow: 
+					0 0 20px rgba(255, 0, 0, 0.5),
+					0 0 30px rgba(0, 255, 0, 0.5),
+					0 0 40px rgba(0, 0, 255, 0.5);
+			}
+
+			.fade-container:hover::before,
+			.fade-container:hover::after {
+				opacity: 0.5;
+				background: linear-gradient(45deg, 
+					rgba(255,0,0,0.2),
+					rgba(0,255,0,0.2),
+					rgba(0,0,255,0.2)
+				);
+			}
+
+			.matrix-text {
+				position: fixed;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				font-family: 'Press Start 2P', cursive;
+				font-size: 3em;
+				color: #0f0;
+				text-shadow: 
+					0 0 5px #0f0,
+					0 0 10px #0f0;
+				opacity: 0;
+				pointer-events: none;
+				z-index: 9999;
+			}
+
+			@keyframes glitchText {
+				0% {
+					transform: translate(-50%, -50%) skew(0deg);
+					text-shadow: 
+						0 0 5px #0f0,
+						0 0 10px #0f0;
+				}
+				20% {
+					transform: translate(-50%, -50%) skew(5deg);
+					text-shadow: 
+						2px 0 5px #f00,
+						-2px 0 5px #00f;
+				}
+				40% {
+					transform: translate(-50%, -50%) skew(-5deg);
+					text-shadow: 
+						-2px 0 5px #f00,
+						2px 0 5px #00f;
+				}
+				60% {
+					transform: translate(-50%, -50%) skew(3deg);
+					text-shadow: 
+						1px 0 5px #f00,
+						-1px 0 5px #00f;
+				}
+				80% {
+					transform: translate(-50%, -50%) skew(-3deg);
+					text-shadow: 
+						-1px 0 5px #f00,
+						1px 0 5px #00f;
+				}
+				100% {
+					transform: translate(-50%, -50%) skew(0deg);
+					text-shadow: 
+						0 0 5px #0f0,
+						0 0 10px #0f0;
+				}
+			}
+
+			.matrix-text.show {
+				animation: glitchText 0.5s ease-in-out;
+				opacity: 1;
+			}
+
+			/* Custom Pointer Cursor */
+			* {
+				cursor: url('assets/cursors/pointer.png') 8 0, auto;
+			}
+
+			/* Clickable elements cursor */
+			a, button, .sound-control, [onclick], input[type="submit"], input[type="button"], .loading-title {
+				cursor: url('assets/cursors/click.png') 8 0, pointer;
+			}
+		</style>
+	</head>
+	<body class="is-loading">
+		<audio id="bgMusic" loop preload="auto" playsinline>
+			<source src="assets/sounds/home.mp3" type="audio/mpeg">
+			Your browser does not support the audio element.
+		</audio>
+		<div class="sound-control" onclick="toggleSound()" title="Toggle Sound">
+			🔈
+		</div>
+		<div id="wrapper">
+			<div id="main">
+				<div class="inner">
+					<h1 id="text02" class="loading-title" style="font-size: 3em;">The Game</h1>
+					<div id="image01" class="image">
+						<span class="frame">
+							<a href="https://norcal.social/@CallMePlayer" rel="me">
+								<img id="dynamic-image" src="/assets/images/image01.jpg" alt="" class="zoom-image" />
+								<div class="matrix-overlay"></div>
+							</a>
+						</span>
+					</div>
+					
+					<p id="text01"><span class="player-glitch">PLAYER</span> 01 <span class="ready-pulse">READY?</span></p>
+					
+					<div class="tor-warning">
+						⚠️ WARNING: (.onion) 🧅 
+					</div>
+
+					<p style="font-size: 2em;"><a href="https://www.torproject.org/download/" target="_blank" rel="noopener noreferrer">⏬</a><a href="https://onionbrowser.com/" target="_blank" rel="noopener noreferrer">⏬</a></p>
+
+					<a href="http://k3xwfcfteip5dj24vbs3rnagbnbtdyrizzmykjqqytvljxlbyy4aj4id.onion/games.html" title="Click Here For a Free Car!">
+						<img src="assets/images/games.png" alt="Games" class="responsive-image glow-image" />
+					</a>
+
+					<div class="fade-container">
+						<img src="assets/images/got-privacy.webp" alt="Got Privacy?" class="fade-image" width="800" height="auto" />
+					</div>
+
+					<p id="text03">© <a href="https://callmeplayer.com">CallMePlayer</a>. All rights reserved.</p>
+
+					<div class="matrix-text">WAKE UP!</div>
+				</div>
+			</div>
+		</div>
+		<script src="assets/main.js"></script>
+		<script>
+			let audio = document.getElementById('bgMusic');
+			let soundControl = document.querySelector('.sound-control');
+			let isPlaying = false;
+
+			// Initialize audio context for better browser support
+			window.AudioContext = window.AudioContext || window.webkitAudioContext;
+			const audioContext = new AudioContext();
+
+			// Function to handle initial user interaction
+			document.addEventListener('click', function initAudio() {
+				// Resume audio context on user interaction
+				if (audioContext.state === 'suspended') {
+					audioContext.resume();
+				}
+				
+				// Remove the listener after first interaction
+				document.removeEventListener('click', initAudio);
+			}, { once: true });
+
+			// Handle audio loading
+			audio.addEventListener('canplaythrough', function() {
+				console.log('Audio loaded and ready to play');
+			});
+
+			// Handle audio errors
+			audio.addEventListener('error', function(e) {
+				console.error('Error with audio:', e);
+				soundControl.textContent = '🔈';
+				isPlaying = false;
+			});
+
+			function toggleSound() {
+				if (audioContext.state === 'suspended') {
+					audioContext.resume();
+				}
+
+				if (isPlaying) {
+					audio.pause();
+					soundControl.textContent = '🔈';
+				} else {
+					// Try to play with error handling
+					audio.play().then(() => {
+						soundControl.textContent = '🔊';
+					}).catch((error) => {
+						console.error('Error playing audio:', error);
+						soundControl.textContent = '🔈';
+					});
+				}
+				isPlaying = !isPlaying;
+			}
+
+			// Volume fade functions
+			function fadeIn(audio, duration = 2000) {
+				audio.volume = 0;
+				audio.play();
+				
+				let start = Date.now();
+				let timer = setInterval(() => {
+					let timePassed = Date.now() - start;
+					audio.volume = Math.min(timePassed / duration, 1);
+					
+					if (timePassed > duration) {
+						audio.volume = 1;
+						clearInterval(timer);
+					}
+				}, 50);
+			}
+
+			function fadeOut(audio, duration = 1000) {
+				let start = Date.now();
+				let initialVolume = audio.volume;
+				
+				let timer = setInterval(() => {
+					let timePassed = Date.now() - start;
+					audio.volume = Math.max(initialVolume - (timePassed / duration), 0);
+					
+					if (timePassed > duration) {
+						audio.pause();
+						audio.volume = initialVolume;
+						clearInterval(timer);
+					}
+				}, 50);
+			}
+
+			// Ensure audio is ready when tab becomes visible
+			document.addEventListener('visibilitychange', function() {
+				if (!document.hidden && isPlaying) {
+					audio.play().catch(console.error);
+				}
+			});
+
+			// Handle page unload
+			window.addEventListener('beforeunload', function() {
+				if (isPlaying) {
+					fadeOut(audio, 500);
+				}
+			});
+
+			function revealUGNG() {
+				const triggerImg = document.getElementById('trigger-img');
+				const ugngImg = document.getElementById('ugng-img');
+				
+				triggerImg.style.display = 'none';
+				ugngImg.classList.remove('hidden');
+				ugngImg.classList.add('visible');
+			}
+
+			// Add click handler for matrix text
+			document.addEventListener('click', function() {
+				const matrixText = document.querySelector('.matrix-text');
+				matrixText.classList.add('show');
+				setTimeout(() => {
+					matrixText.classList.remove('show');
+				}, 500);
+			});
+		</script>
+	</body>
+</html>
