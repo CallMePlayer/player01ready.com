@@ -1,1 +1,1 @@
-ARE YOU READY? 🎮 https://player01ready.com
+ARE YOU READY? 🎮 player01ready.com
