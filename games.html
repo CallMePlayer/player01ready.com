@@ -251,6 +251,16 @@
 					2px -2px 0 #0000ff;
 			}
 
+			/* Custom Pointer Cursor */
+			* {
+				cursor: url('assets/cursors/pointer.png') 8 0, auto;
+			}
+
+			/* Clickable elements cursor */
+			a, button, .sound-control, [onclick], input[type="submit"], input[type="button"], .level-link, .back-link {
+				cursor: url('assets/cursors/click.png') 8 0, pointer;
+			}
+
 			.matrix-text {
 				position: fixed;
 				top: 50%;
