@@ -3,7 +3,7 @@
 	<head>
 		<title>Unlimited Games + No Games</title>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 		<meta name="color-scheme" content="light only" />
 		<meta name="description" content="Tor Required" />
 		<link href="https://fonts.googleapis.com/css2?display=swap&family=Press+Start+2P:ital,wght@0,400;1,400" rel="stylesheet" type="text/css" />
@@ -319,6 +319,81 @@
 			.matrix-text.show {
 				animation: glitchText 0.5s ease-in-out;
 				opacity: 1;
+			}
+
+			@media (max-width: 768px) {
+				.level-container {
+					padding: 5px;
+					margin: 0 10px;
+					width: 90%;
+				}
+				.title-container {
+					flex-direction: column;
+					gap: 10px;
+				}
+				.title-container h1 {
+					font-size: 1em;
+					text-align: center;
+					word-wrap: break-word;
+					line-height: 1.4;
+				}
+				.fade-image {
+					max-width: 100%;
+					width: 100%;
+					height: auto;
+					object-fit: contain;
+				}
+				.level-item {
+					margin: 5px 0;
+					padding: 8px;
+					width: 100%;
+					box-sizing: border-box;
+				}
+				.level-item h3 {
+					font-size: 0.8em;
+					margin: 0;
+				}
+				.tor-warning {
+					margin: 10px;
+					padding: 10px;
+					font-size: 0.8em;
+					width: 90%;
+					margin-left: auto;
+					margin-right: auto;
+				}
+				#text03 {
+					font-size: 0.7em !important;
+					text-align: center;
+					margin: 5px 0;
+				}
+				.volume-control {
+					right: 60px;
+					bottom: 15px;
+					transform: scale(0.8);
+				}
+				.sound-control {
+					bottom: 15px;
+					right: 15px;
+					transform: scale(0.8);
+				}
+				.matrix-text {
+					font-size: 1.5em;
+				}
+				img[width="800"] {
+					width: 100% !important;
+					height: auto !important;
+				}
+				.inner {
+					padding: 1em;
+				}
+				.level-list {
+					width: 100%;
+					padding: 0;
+				}
+				.level-link {
+					width: 100%;
+					display: block;
+				}
 			}
 		</style>
 	</head>
