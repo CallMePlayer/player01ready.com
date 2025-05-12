@@ -250,6 +250,66 @@
 					-2px -2px 0 #00ff00,
 					2px -2px 0 #0000ff;
 			}
+
+			.matrix-text {
+				position: fixed;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				font-family: 'Press Start 2P', cursive;
+				font-size: 3em;
+				color: #0f0;
+				text-shadow: 
+					0 0 5px #0f0,
+					0 0 10px #0f0;
+				opacity: 0;
+				pointer-events: none;
+				z-index: 9999;
+			}
+
+			@keyframes glitchText {
+				0% {
+					transform: translate(-50%, -50%) skew(0deg);
+					text-shadow: 
+						0 0 5px #0f0,
+						0 0 10px #0f0;
+				}
+				20% {
+					transform: translate(-50%, -50%) skew(5deg);
+					text-shadow: 
+						2px 0 5px #f00,
+						-2px 0 5px #00f;
+				}
+				40% {
+					transform: translate(-50%, -50%) skew(-5deg);
+					text-shadow: 
+						-2px 0 5px #f00,
+						2px 0 5px #00f;
+				}
+				60% {
+					transform: translate(-50%, -50%) skew(3deg);
+					text-shadow: 
+						1px 0 5px #f00,
+						-1px 0 5px #00f;
+				}
+				80% {
+					transform: translate(-50%, -50%) skew(-3deg);
+					text-shadow: 
+						-1px 0 5px #f00,
+						1px 0 5px #00f;
+				}
+				100% {
+					transform: translate(-50%, -50%) skew(0deg);
+					text-shadow: 
+						0 0 5px #0f0,
+						0 0 10px #0f0;
+				}
+			}
+
+			.matrix-text.show {
+				animation: glitchText 0.5s ease-in-out;
+				opacity: 1;
+			}
 		</style>
 	</head>
 	<body class="is-loading">
@@ -263,6 +323,7 @@
 		<div class="volume-control" style="position: fixed; bottom: 20px; right: 80px; background: rgba(0, 0, 0, 0.7); padding: 10px; border-radius: 5px; z-index: 9999;">
 			<input type="range" min="0" max="100" value="100" id="volumeSlider" style="width: 100px;" oninput="adjustVolume(this.value)">
 		</div>
+		<div class="matrix-text">WAKE UP!</div>
 		<div id="wrapper">
 			<div id="main">
 				<div class="inner">
@@ -292,19 +353,17 @@
 							</li>
 						</ul>
 					</div>
-					<p id="text03" style="font-size: 0.8em;">Stay tuned for level updates <a href="https://norcal.social/@CallMePlayer">@CallMePlayer@norcal.social</a> OR <a href="https://bsky.app/profile/menzo.video">@menzo.video</a></p>
+					<p id="text03" style="font-size: 1em;">Stay tuned for level updates</p>
+					<p id="text03" style="font-size: 1.5em;"><a href="https://norcal.social/@CallMePlayer">@CallMePlayer@norcal.social</a></p>
+					<p id="text03" style="font-size: 1.5em;"><a href="https://bsky.app/profile/menzo.video">@menzo.video</a></p>
 					
 					<a href="https://www.privacyguides.org/en/basics/why-privacy-matters/" title="got privacy?|">
 						<img src="assets/images/got-privacy.webp" alt="Got Privacy?" class="fade-image responsive-image glow-image"width="800" height="auto" />
 					</a>
-
-					<p id="text03" style="font-size: 0.8em;">Cursor made by <a href="https://primmr.dev/projects/wii-pointer-cursors/" target="_blank" rel="noopener noreferrer">PrimmR</a></p>
-					<p id="text03">© <a href="https://callmeplayer.com">CallMePlayer</a>. All rights reserved.</p>
-					
-
+					<p id="text03" style="font-size: 0.8em;">Cursor made by <a href="https://primmr.dev/projects/wii-pointer-cursors/" target="_blank" rel="noopener noreferrer">PrimmR</a></p>	
 				</div>
 			</div>
-			<a href="index.html" class="back-link">← Back to Home</a>
+			<a href="index.html" class="back-link">← Home</a>
 		</div>
 		<script src="assets/main.js"></script>
 		<script>
@@ -379,6 +438,15 @@
 					e.preventDefault();
 					toggleSound();
 				}
+			});
+
+			// Add click handler for matrix text
+			document.addEventListener('click', function() {
+				const matrixText = document.querySelector('.matrix-text');
+				matrixText.classList.add('show');
+				setTimeout(() => {
+					matrixText.classList.remove('show');
+				}, 500);
 			});
 		</script>
 	</body>

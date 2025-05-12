@@ -119,6 +119,11 @@
 				position: relative;
 				display: inline-block;
 				cursor: pointer;
+				transition: all 0.3s ease;
+			}
+			
+			.loading-title:hover {
+				transform: scale(1.05);
 			}
 			
 			.loading-title::after {
@@ -129,7 +134,7 @@
 				width: 0;
 				height: 4px;
 				background: linear-gradient(90deg, #00ff00, #00ff00);
-				transition: width 2s ease-in-out;
+				transition: width 1s ease-in-out;
 			}
 			
 			.loading-title:hover::after {
@@ -145,8 +150,10 @@
 				font-size: 0.5em;
 				margin-top: 10px;
 				white-space: nowrap;
-				animation: loadingText 2s forwards;
+				animation: loadingText 1s forwards;
 				opacity: 0;
+				color: #00ff00;
+				text-shadow: 0 0 5px #00ff00;
 			}
 			
 			.player-glitch {
@@ -169,7 +176,7 @@
 
 			.ready-pulse:hover {
 				animation: pulse 1s infinite;
-				color: #ff00ff;
+				color: #FFC0CB;
 			}
 
 			@keyframes pulse {
@@ -319,6 +326,8 @@
 				opacity: 0;
 				pointer-events: none;
 				z-index: 9999;
+				transition: opacity 0.1s ease-in-out;
+				user-select: none;
 			}
 
 			@keyframes glitchText {
@@ -402,23 +411,21 @@
 					<h1 id="text02" class="loading-title" style="font-size: 3em;"><a href="https://tebs-game-of-life.com/single-large/single-large.html" title="Life">The Game</a></h1>
 					<div id="image01" class="image">
 						<span class="frame">
-							<a href="https://norcal.social/@CallMePlayer" rel="me" style="display: none;">hidden</a>>
-								<img id="dynamic-image" src="/assets/images/image01.jpg" alt="" class="zoom-image" />
-								<div class="matrix-overlay"></div>
-							</a>
+							<a href="https://norcal.social/@CallMePlayer" rel="me" style="display: none;">hidden</a>
+							<img id="dynamic-image" src="assets/images/image01.jpg" alt="Player" class="zoom-image" />
+							<div class="matrix-overlay"></div>
 						</span>
 					</div>
 					
 					<p id="text01"><span class="ready-pulse">READY?</span></p>
 					
 					<div class="fade-container">
-					<a href="games.html" title="Go!">
-						<img src="assets/images/PLAYER.jpg" alt="Games" class="fade-image responsive-image glow-image" />
-					</a>
+						<a href="games.html" title="Go!">
+							<img src="assets/images/PLAYER.jpg" alt="Games" class="fade-image responsive-image glow-image" />
+						</a>
 					</div>
 
-					<div class="matrix-text">WAKE UP!</div>
-				</div>
+					<p id="text03"><span class="ready-pulse"><a href="https://callmeplayer.com" title="▶️ PLAYER 01 READY">CallMePlayer</a></span></p>
 			</div>
 		</div>
 		<script src="assets/main.js"></script>
@@ -506,12 +513,23 @@
 			}
 
 			// Add click handler for matrix text
-			document.addEventListener('click', function() {
+			document.addEventListener('click', function(e) {
+				// Don't trigger on volume slider or sound control
+				if (e.target.closest('.volume-control') || e.target.closest('.sound-control')) {
+					return;
+				}
 				const matrixText = document.querySelector('.matrix-text');
 				matrixText.classList.add('show');
 				setTimeout(() => {
 					matrixText.classList.remove('show');
 				}, 500);
+			});
+
+			// Prevent text selection during animations
+			document.addEventListener('selectstart', function(e) {
+				if (e.target.closest('.matrix-text')) {
+					e.preventDefault();
+				}
 			});
 		</script>
 	</body>
