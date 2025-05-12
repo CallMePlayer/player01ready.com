@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Unlimited Games + No Games</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<meta name="color-scheme" content="light only" />
+		<meta name="description" content="Tor Required" />
+		<link href="https://fonts.googleapis.com/css2?display=swap&family=Press+Start+2P:ital,wght@0,400;1,400" rel="stylesheet" type="text/css" />
+		<link rel="icon" type="image/jpg" href="assets/images/icon.png" />
+		<link rel="apple-touch-icon" type="image/jpg" href="assets/images/icon.png" />
+		<link rel="stylesheet" href="assets/main.css" />
+		<style>
+			.level-container {
+				max-width: 800px;
+				margin: 0 auto;
+				padding: 10px;
+				color: #ffffff;
+			}
+			.level-list {
+				list-style: none;
+				padding: 0;
+			}
+			.level-item {
+				margin: 10px 0;
+				padding: 10px;
+				border: 2px solid #333;
+				border-radius: 8px;
+				transition: all 0.3s ease;
+				color: #ffffff;
+			}
+			.level-item:hover {
+				transform: translateX(10px);
+				box-shadow: 0 0 15px rgba(255, 255, 0, 0.5);
+			}
+			.level-link {
+				text-decoration: none;
+				color: #ffffff;
+				display: block;
+			}
+			.back-link {
+				display: inline-block;
+				margin: 20px 0;
+				padding: 10px 20px;
+				background-color: #333;
+				color: #fff;
+				text-decoration: none;
+				border-radius: 5px;
+				transition: background-color 0.3s ease;
+			}
+			.back-link:hover {
+				background-color: #555;
+			}
+			.sound-control {
+				position: fixed;
+				bottom: 20px;
+				right: 20px;
+				background: rgba(0, 0, 0, 0.7);
+				padding: 10px;
+				border-radius: 5px;
+				cursor: pointer;
+				transition: all 0.3s ease;
+				z-index: 9999;
+				pointer-events: auto;
+			}
+			.sound-control:hover {
+				background: rgba(0, 0, 0, 0.9);
+			}
+			.volume-control {
+				position: fixed;
+				bottom: 20px;
+				right: 80px;
+				background: rgba(0, 0, 0, 0.7);
+				padding: 10px;
+				border-radius: 5px;
+				z-index: 9999;
+			}
+			.fade-container {
+				position: relative;
+				margin: 40px auto;
+				text-align: center;
+			}
+			@keyframes glitch {
+				0% {
+					transform: translate(0);
+					filter: hue-rotate(0deg);
+				}
+				25% {
+					transform: translate(-5px, 2px);
+					filter: hue-rotate(90deg);
+				}
+				50% {
+					transform: translate(5px, -2px);
+					filter: hue-rotate(180deg);
+				}
+				75% {
+					transform: translate(-3px, -1px);
+					filter: hue-rotate(270deg);
+				}
+				100% {
+					transform: translate(0);
+					filter: hue-rotate(360deg);
+				}
+			}
+			@keyframes neonPulse {
+				0% {
+					text-shadow: 0 0 10px #ff00de,
+								0 0 20px #ff00de,
+								0 0 30px #ff00de;
+					transform: scale(1);
+				}
+				50% {
+					text-shadow: 0 0 20px #ff00de,
+								0 0 30px #ff00de,
+								0 0 40px #ff00de;
+					transform: scale(1.05);
+				}
+				100% {
+					text-shadow: 0 0 10px #ff00de,
+								0 0 20px #ff00de,
+								0 0 30px #ff00de;
+					transform: scale(1);
+				}
+			}
+			@keyframes cyberGlitch {
+				0% {
+					transform: skew(0deg);
+					text-shadow: 2px 2px #00ff00;
+				}
+				25% {
+					transform: skew(-5deg);
+					text-shadow: -2px 2px #0000ff;
+				}
+				50% {
+					transform: skew(5deg);
+					text-shadow: 2px -2px #ff0000;
+				}
+				75% {
+					transform: skew(-3deg);
+					text-shadow: -2px -2px #00ff00;
+				}
+				100% {
+					transform: skew(0deg);
+					text-shadow: 2px 2px #00ff00;
+				}
+			}
+			.title-container {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				gap: 15px;
+				margin-bottom: 20px;
+			}
+			.title-first {
+				display: inline-block;
+				transition: all 0.3s ease;
+			}
+			.title-first:hover {
+				animation: neonPulse 1.5s infinite;
+				color: #ff00de;
+				cursor: default;
+			}
+			.title-second {
+				display: inline-block;
+				transition: all 0.3s ease;
+			}
+			.title-second:hover {
+				animation: cyberGlitch 0.3s infinite;
+				color: #00ff00;
+				cursor: default;
+			}
+			.fade-container::before {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background: linear-gradient(to bottom, 
+					rgba(0,0,0,1) 0%,
+					rgba(0,0,0,0) 10%,
+					rgba(0,0,0,0) 90%,
+					rgba(0,0,0,1) 100%
+				);
+				pointer-events: none;
+				z-index: 1;
+			}
+			.fade-container::after {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background: linear-gradient(to right, 
+					rgba(0,0,0,1) 0%,
+					rgba(0,0,0,0) 10%,
+					rgba(0,0,0,0) 90%,
+					rgba(0,0,0,1) 100%
+				);
+				pointer-events: none;
+				z-index: 1;
+			}
+			.fade-image {
+				position: relative;
+				max-width: 800px;
+				width: 100%;
+				height: auto;
+				display: block;
+				margin: 0 auto;
+				z-index: 0;
+				object-fit: contain;
+				transition: all 0.3s ease;
+			}
+			.fade-image:hover {
+				animation: glitch 0.5s infinite;
+				transform: scale(1.05);
+				filter: brightness(1.2) contrast(1.2);
+				box-shadow: 
+					0 0 20px rgba(255, 0, 0, 0.5),
+					0 0 30px rgba(0, 255, 0, 0.5),
+					0 0 40px rgba(0, 0, 255, 0.5);
+			}
+			.fade-container:hover::before,
+			.fade-container:hover::after {
+				opacity: 0.5;
+				background: linear-gradient(45deg, 
+					rgba(255,0,0,0.2),
+					rgba(0,255,0,0.2),
+					rgba(0,0,255,0.2)
+				);
+			}
+			.tor-warning {
+				background-color: #ffeb3b;
+				color: #000;
+				padding: 15px;
+				border-radius: 8px;
+				margin: 20px 0;
+				text-align: center;
+			}
+			.player-glitch {
+				display: inline-block;
+				transition: all 0.3s ease;
+			}
+
+			.player-glitch:hover {
+				animation: glitch 0.5s infinite;
+				text-shadow: 
+					2px 2px 0 #ff0000,
+					-2px -2px 0 #00ff00,
+					2px -2px 0 #0000ff;
+			}
+		</style>
+	</head>
+	<body class="is-loading">
+		<audio id="bgMusic" loop preload="auto" playsinline>
+			<source src="assets/sounds/home.mp3" type="audio/mpeg">
+			Your browser does not support the audio element.
+		</audio>
+		<div class="sound-control" onclick="toggleSound()" title="Toggle Sound">
+			🔊
+		</div>
+		<div class="volume-control" style="position: fixed; bottom: 20px; right: 80px; background: rgba(0, 0, 0, 0.7); padding: 10px; border-radius: 5px; z-index: 9999;">
+			<input type="range" min="0" max="100" value="100" id="volumeSlider" style="width: 100px;" oninput="adjustVolume(this.value)">
+		</div>
+		<div id="wrapper">
+			<div id="main">
+				<div class="inner">
+					<div class="title-container">
+						<h1 id="text02" class="title">🎮 Unlimited Games + No Games 🥓</h1>
+					</div>
+
+					
+						<img src="assets/images/UGNG.jpg" alt="Unlimited Games + No Games" class="player-glitch" width="800" height="auto" />
+					
+
+					<div class="tor-warning">
+						<p id="text01"><span class="player-glitch">⚠️ <a href="https://www.privacyguides.org/en/advanced/tor-overview/" target="_blank" rel="noopener noreferrer">WARNING: (.onion)</a> 🧅</span></p>
+					</div>
+
+					<div class="level-container" style="margin-top: 20px;">
+						<ul class="level-list">
+							<li class="level-item" style="opacity: 0.7; cursor: not-allowed;">
+								<div class="level-link">
+									<h3 id="text01">Level 1: Coming Soon</h3>
+								</div>
+							</li>
+							<li class="level-item">
+								<a href="http://xrrkzs2xagxwwrtbg34hfvrd5hi6bjch4pwlxbk47op5tmcvyf4pwoqd.onion/level-0.html" class="level-link" title="Open in Tor">
+									<h3 id="text01">Level 0: Binary Basics</h3>
+								</a>
+							</li>
+						</ul>
+					</div>
+					<p id="text03" style="font-size: 0.8em;">Stay tuned for level updates <a href="https://norcal.social/@CallMePlayer">@CallMePlayer@norcal.social</a> OR <a href="https://bsky.app/profile/menzo.video">@menzo.video</a></p>
+					
+					<a href="https://www.privacyguides.org/en/basics/why-privacy-matters/" title="got privacy?|">
+						<img src="assets/images/got-privacy.webp" alt="Got Privacy?" class="fade-image responsive-image glow-image"width="800" height="auto" />
+					</a>
+
+					<p id="text03" style="font-size: 0.8em;">Cursor made by <a href="https://primmr.dev/projects/wii-pointer-cursors/" target="_blank" rel="noopener noreferrer">PrimmR</a></p>
+					<p id="text03">© <a href="https://callmeplayer.com">CallMePlayer</a>. All rights reserved.</p>
+					
+
+				</div>
+			</div>
+			<a href="index.html" class="back-link">← Back to Home</a>
+		</div>
+		<script src="assets/main.js"></script>
+		<script>
+			let audio = document.getElementById('bgMusic');
+			let soundControl = document.querySelector('.sound-control');
+			let volumeSlider = document.getElementById('volumeSlider');
+			let isPlaying = localStorage.getItem('audioPlaying') === 'true';
+			let volume = localStorage.getItem('audioVolume') || 100;
+
+			// Set initial volume
+			audio.volume = volume / 100;
+			volumeSlider.value = volume;
+
+			// Set initial state
+			if (isPlaying) {
+				soundControl.textContent = '🔊';
+				playAudio();
+			} else {
+				soundControl.textContent = '🔈';
+			}
+
+			function playAudio() {
+				let playPromise = audio.play();
+				if (playPromise !== undefined) {
+					playPromise.then(_ => {
+						console.log('Audio playback started successfully');
+					})
+					.catch(error => {
+						console.error('Error playing audio:', error);
+						soundControl.textContent = '🔈';
+						isPlaying = false;
+						localStorage.setItem('audioPlaying', 'false');
+					});
+				}
+			}
+
+			// Add error handling
+			audio.addEventListener('error', function(e) {
+				console.error('Error loading audio:', e);
+				soundControl.textContent = '🔈';
+				isPlaying = false;
+				localStorage.setItem('audioPlaying', 'false');
+			});
+
+			audio.addEventListener('loadeddata', function() {
+				console.log('Audio loaded successfully');
+				if (isPlaying) {
+					playAudio();
+				}
+			});
+
+			function adjustVolume(value) {
+				audio.volume = value / 100;
+				localStorage.setItem('audioVolume', value);
+			}
+
+			function toggleSound() {
+				if (isPlaying) {
+					audio.pause();
+					soundControl.textContent = '🔈';
+				} else {
+					playAudio();
+					soundControl.textContent = '🔊';
+				}
+				isPlaying = !isPlaying;
+				localStorage.setItem('audioPlaying', isPlaying);
+			}
+
+			// Add keyboard shortcut (Space bar) for toggling sound
+			document.addEventListener('keydown', function(e) {
+				if (e.code === 'Space' && !e.target.matches('input, textarea')) {
+					e.preventDefault();
+					toggleSound();
+				}
+			});
+		</script>
+	</body>
+</html> 

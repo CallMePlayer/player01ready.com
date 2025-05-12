@@ -374,6 +374,15 @@
 			a, button, .sound-control, [onclick], input[type="submit"], input[type="button"], .loading-title {
 				cursor: url('assets/cursors/click.png') 8 0, pointer;
 			}
+			.volume-control {
+				position: fixed;
+				bottom: 20px;
+				right: 80px;
+				background: rgba(0, 0, 0, 0.7);
+				padding: 10px;
+				border-radius: 5px;
+				z-index: 9999;
+			}
 		</style>
 	</head>
 	<body class="is-loading">
@@ -382,41 +391,31 @@
 			Your browser does not support the audio element.
 		</audio>
 		<div class="sound-control" onclick="toggleSound()" title="Toggle Sound">
-			🔈
+			🔊
+		</div>
+		<div class="volume-control">
+			<input type="range" min="0" max="100" value="100" id="volumeSlider" style="width: 100px;" oninput="adjustVolume(this.value)">
 		</div>
 		<div id="wrapper">
 			<div id="main">
 				<div class="inner">
-					<h1 id="text02" class="loading-title" style="font-size: 3em;"><a href="https://tebs-game-of-life.com/single-large/single-large.html" title="The Game of Life">The Game</a></h1>
+					<h1 id="text02" class="loading-title" style="font-size: 3em;"><a href="https://tebs-game-of-life.com/single-large/single-large.html" title="Life">The Game</a></h1>
 					<div id="image01" class="image">
 						<span class="frame">
-							<a href="https://norcal.social/@CallMePlayer" rel="me">
+							<a href="https://norcal.social/@CallMePlayer" rel="me" style="display: none;">hidden</a>>
 								<img id="dynamic-image" src="/assets/images/image01.jpg" alt="" class="zoom-image" />
 								<div class="matrix-overlay"></div>
 							</a>
 						</span>
 					</div>
 					
-					<p id="text01"><span class="ready-pulse"><a href="https://www.privacyguides.org/en/advanced/tor-overview/" target="_blank" rel="noopener noreferrer">READY?</a></span></p>
+					<p id="text01"><span class="ready-pulse">READY?</span></p>
 					
-					
-					<div class="tor-warning">
-						<p id="text01"><span class="player-glitch">⚠️ WARNING: (.onion) 🧅 </span></p>
-					</div>
-
 					<div class="fade-container">
-					<a href="http://xrrkzs2xagxwwrtbg34hfvrd5hi6bjch4pwlxbk47op5tmcvyf4pwoqd.onion/games.html" title="Open in Tor">
+					<a href="games.html" title="Go!">
 						<img src="assets/images/PLAYER.jpg" alt="Games" class="fade-image responsive-image glow-image" />
 					</a>
 					</div>
-
-					
-					<a href="https://www.privacyguides.org/en/basics/why-privacy-matters/" title="got privacy?|">
-						<img src="assets/images/got-privacy.webp" alt="Got Privacy?" class="fade-image responsive-image glow-image"width="800" height="auto" />
-					</a>
-
-					<p id="text03" style="font-size: 0.8em;">Cursor made by <a href="https://primmr.dev/projects/wii-pointer-cursors/" target="_blank" rel="noopener noreferrer">PrimmR</a></p>
-					<p id="text03">© <a href="https://callmeplayer.com">CallMePlayer</a>. All rights reserved.</p>
 
 					<div class="matrix-text">WAKE UP!</div>
 				</div>
@@ -426,99 +425,74 @@
 		<script>
 			let audio = document.getElementById('bgMusic');
 			let soundControl = document.querySelector('.sound-control');
-			let isPlaying = false;
+			let volumeSlider = document.getElementById('volumeSlider');
+			let isPlaying = localStorage.getItem('audioPlaying') === 'true';
+			let volume = localStorage.getItem('audioVolume') || 100;
 
-			// Initialize audio context for better browser support
-			window.AudioContext = window.AudioContext || window.webkitAudioContext;
-			const audioContext = new AudioContext();
+			// Set initial volume
+			audio.volume = volume / 100;
+			volumeSlider.value = volume;
 
-			// Function to handle initial user interaction
-			document.addEventListener('click', function initAudio() {
-				// Resume audio context on user interaction
-				if (audioContext.state === 'suspended') {
-					audioContext.resume();
+			// Set initial state
+			if (isPlaying) {
+				soundControl.textContent = '🔊';
+				playAudio();
+			} else {
+				soundControl.textContent = '🔈';
+			}
+
+			function playAudio() {
+				let playPromise = audio.play();
+				if (playPromise !== undefined) {
+					playPromise.then(_ => {
+						console.log('Audio playback started successfully');
+					})
+					.catch(error => {
+						console.error('Error playing audio:', error);
+						soundControl.textContent = '🔈';
+						isPlaying = false;
+						localStorage.setItem('audioPlaying', 'false');
+					});
 				}
-				
-				// Remove the listener after first interaction
-				document.removeEventListener('click', initAudio);
-			}, { once: true });
+			}
 
-			// Handle audio loading
-			audio.addEventListener('canplaythrough', function() {
-				console.log('Audio loaded and ready to play');
-			});
-
-			// Handle audio errors
+			// Add error handling
 			audio.addEventListener('error', function(e) {
-				console.error('Error with audio:', e);
+				console.error('Error loading audio:', e);
 				soundControl.textContent = '🔈';
 				isPlaying = false;
+				localStorage.setItem('audioPlaying', 'false');
 			});
 
-			function toggleSound() {
-				if (audioContext.state === 'suspended') {
-					audioContext.resume();
+			audio.addEventListener('loadeddata', function() {
+				console.log('Audio loaded successfully');
+				if (isPlaying) {
+					playAudio();
 				}
+			});
 
+			function adjustVolume(value) {
+				audio.volume = value / 100;
+				localStorage.setItem('audioVolume', value);
+			}
+
+			function toggleSound() {
 				if (isPlaying) {
 					audio.pause();
 					soundControl.textContent = '🔈';
 				} else {
-					// Try to play with error handling
-					audio.play().then(() => {
-						soundControl.textContent = '🔊';
-					}).catch((error) => {
-						console.error('Error playing audio:', error);
-						soundControl.textContent = '🔈';
-					});
+					playAudio();
+					soundControl.textContent = '🔊';
 				}
 				isPlaying = !isPlaying;
+				localStorage.setItem('audioPlaying', isPlaying);
 			}
 
-			// Volume fade functions
-			function fadeIn(audio, duration = 2000) {
-				audio.volume = 0;
-				audio.play();
-				
-				let start = Date.now();
-				let timer = setInterval(() => {
-					let timePassed = Date.now() - start;
-					audio.volume = Math.min(timePassed / duration, 1);
-					
-					if (timePassed > duration) {
-						audio.volume = 1;
-						clearInterval(timer);
-					}
-				}, 50);
-			}
-
-			function fadeOut(audio, duration = 1000) {
-				let start = Date.now();
-				let initialVolume = audio.volume;
-				
-				let timer = setInterval(() => {
-					let timePassed = Date.now() - start;
-					audio.volume = Math.max(initialVolume - (timePassed / duration), 0);
-					
-					if (timePassed > duration) {
-						audio.pause();
-						audio.volume = initialVolume;
-						clearInterval(timer);
-					}
-				}, 50);
-			}
-
-			// Ensure audio is ready when tab becomes visible
-			document.addEventListener('visibilitychange', function() {
-				if (!document.hidden && isPlaying) {
-					audio.play().catch(console.error);
-				}
-			});
-
-			// Handle page unload
-			window.addEventListener('beforeunload', function() {
-				if (isPlaying) {
-					fadeOut(audio, 500);
+			// Add keyboard shortcut (Space bar) for toggling sound
+			document.addEventListener('keydown', function(e) {
+				if (e.code === 'Space' && !e.target.matches('input, textarea')) {
+					e.preventDefault();
+					toggleSound();
 				}
 			});
 
