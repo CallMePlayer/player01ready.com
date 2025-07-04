@@ -263,6 +263,89 @@
 					2px -2px 0 #0000ff;
 			}
 
+			/* UGNG Image Blend Effect */
+			.ugng-container {
+				position: relative;
+				display: inline-block;
+				margin: 20px 0;
+			}
+
+			.ugng-container::before {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background: linear-gradient(
+					to bottom,
+					rgba(0, 0, 0, 0.8) 0%,
+					rgba(0, 0, 0, 0.4) 20%,
+					rgba(0, 0, 0, 0) 50%,
+					rgba(0, 0, 0, 0) 80%,
+					rgba(0, 0, 0, 0.8) 100%
+				);
+				z-index: 2;
+				pointer-events: none;
+			}
+
+			.ugng-container::after {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background: linear-gradient(
+					to right,
+					rgba(0, 0, 0, 0.6) 0%,
+					rgba(0, 0, 0, 0.2) 20%,
+					rgba(0, 0, 0, 0) 50%,
+					rgba(0, 0, 0, 0.2) 80%,
+					rgba(0, 0, 0, 0.6) 100%
+				);
+				z-index: 2;
+				pointer-events: none;
+			}
+
+			.ugng-image {
+				display: block;
+				max-width: 100%;
+				height: auto;
+				mix-blend-mode: multiply;
+				filter: contrast(1.1) brightness(0.9);
+				transition: all 0.3s ease;
+			}
+
+			.ugng-image:hover {
+				mix-blend-mode: normal;
+				filter: contrast(1.2) brightness(1.1);
+				animation: matrixRain 2s linear infinite;
+			}
+
+			@keyframes matrixRain {
+				0% {
+					filter: contrast(1.2) brightness(1.1) hue-rotate(0deg);
+					text-shadow: 0 0 5px #0f0;
+				}
+				25% {
+					filter: contrast(1.2) brightness(1.1) hue-rotate(90deg);
+					text-shadow: 0 0 10px #0f0;
+				}
+				50% {
+					filter: contrast(1.2) brightness(1.1) hue-rotate(180deg);
+					text-shadow: 0 0 15px #0f0;
+				}
+				75% {
+					filter: contrast(1.2) brightness(1.1) hue-rotate(270deg);
+					text-shadow: 0 0 10px #0f0;
+				}
+				100% {
+					filter: contrast(1.2) brightness(1.1) hue-rotate(360deg);
+					text-shadow: 0 0 5px #0f0;
+				}
+			}
+
 			/* Custom Pointer Cursor */
 			* {
 				cursor: url('assets/cursors/pointer.png') 8 0, auto;
@@ -271,66 +354,6 @@
 			/* Clickable elements cursor */
 			a, button, .sound-control, [onclick], input[type="submit"], input[type="button"], .level-link, .back-link {
 				cursor: url('assets/cursors/click.png') 8 0, pointer;
-			}
-
-			.matrix-text {
-				position: fixed;
-				top: 50%;
-				left: 50%;
-				transform: translate(-50%, -50%);
-				font-family: 'Press Start 2P', cursive;
-				font-size: 3em;
-				color: #0f0;
-				text-shadow: 
-					0 0 5px #0f0,
-					0 0 10px #0f0;
-				opacity: 0;
-				pointer-events: none;
-				z-index: 9999;
-			}
-
-			@keyframes glitchText {
-				0% {
-					transform: translate(-50%, -50%) skew(0deg);
-					text-shadow: 
-						0 0 5px #0f0,
-						0 0 10px #0f0;
-				}
-				20% {
-					transform: translate(-50%, -50%) skew(5deg);
-					text-shadow: 
-						2px 0 5px #f00,
-						-2px 0 5px #00f;
-				}
-				40% {
-					transform: translate(-50%, -50%) skew(-5deg);
-					text-shadow: 
-						-2px 0 5px #f00,
-						2px 0 5px #00f;
-				}
-				60% {
-					transform: translate(-50%, -50%) skew(3deg);
-					text-shadow: 
-						1px 0 5px #f00,
-						-1px 0 5px #00f;
-				}
-				80% {
-					transform: translate(-50%, -50%) skew(-3deg);
-					text-shadow: 
-						-1px 0 5px #f00,
-						1px 0 5px #00f;
-				}
-				100% {
-					transform: translate(-50%, -50%) skew(0deg);
-					text-shadow: 
-						0 0 5px #0f0,
-						0 0 10px #0f0;
-				}
-			}
-
-			.matrix-text.show {
-				animation: glitchText 0.5s ease-in-out;
-				opacity: 1;
 			}
 
 			@media (max-width: 768px) {
@@ -388,9 +411,6 @@
 					right: 15px;
 					transform: scale(0.8);
 				}
-				.matrix-text {
-					font-size: 1.5em;
-				}
 				img[width="800"] {
 					width: 100% !important;
 					height: auto !important;
@@ -420,7 +440,6 @@
 		<div class="volume-control" style="position: fixed; bottom: 20px; right: 80px; background: rgba(0, 0, 0, 0.7); padding: 10px; border-radius: 5px; z-index: 9999;">
 			<input type="range" min="0" max="100" value="100" id="volumeSlider" style="width: 100px;" oninput="adjustVolume(this.value)">
 		</div>
-		<div class="matrix-text">WAKE UP!</div>
 		<div id="wrapper">
 			<div id="main">
 				<div class="inner">
@@ -428,8 +447,9 @@
 						<h1 id="text02" class="title">🎮 Unlimited Games + No Games 🥓</h1>
 					</div>
 
-					
-						<img src="assets/images/UGNG.jpg" alt="Unlimited Games + No Games" class="player-glitch" width="800" height="auto" />
+					<div class="ugng-container">
+						<img src="assets/images/UGNG.jpg" alt="Unlimited Games + No Games" class="ugng-image" width="800" height="auto" />
+					</div>
 
 					<div class="level-container" style="margin-top: 20px;">
 						<ul class="level-list">
@@ -527,15 +547,6 @@
 					e.preventDefault();
 					toggleSound();
 				}
-			});
-
-			// Add click handler for matrix text
-			document.addEventListener('click', function() {
-				const matrixText = document.querySelector('.matrix-text');
-				matrixText.classList.add('show');
-				setTimeout(() => {
-					matrixText.classList.remove('show');
-				}, 500);
 			});
 		</script>
 	</body>
