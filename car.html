@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Free Car - Player01Ready</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta name="color-scheme" content="light only" />
+		<meta name="description" content="Free Car - Not a Virus" />
+		<link href="https://fonts.googleapis.com/css2?display=swap&family=Press+Start+2P:ital,wght@0,400;1,400" rel="stylesheet" type="text/css" />
+		<link rel="icon" type="image/png" href="assets/images/icon.png" />
+		<link rel="apple-touch-icon" type="image/png" href="assets/images/icon.png" />
+		<link rel="stylesheet" href="assets/main.css" />
+		<style>
+			.car-container {
+				text-align: center;
+				margin: 40px auto;
+				max-width: 600px;
+				padding: 20px;
+			}
+
+			.car-title {
+				font-size: 2.5em;
+				color: #00ff00;
+				text-shadow: 0 0 10px #00ff00;
+				margin-bottom: 30px;
+				animation: glow 2s ease-in-out infinite alternate;
+			}
+
+			@keyframes glow {
+				from {
+					text-shadow: 0 0 10px #00ff00;
+				}
+				to {
+					text-shadow: 0 0 20px #00ff00, 0 0 30px #00ff00;
+				}
+			}
+
+			.car-image {
+				max-width: 500px;
+				width: 100%;
+				height: auto;
+				border-radius: 10px;
+				box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+				transition: all 0.3s ease;
+				margin: 20px 0;
+			}
+
+			.car-image:hover {
+				transform: scale(1.05);
+				box-shadow: 0 0 30px rgba(0, 255, 0, 0.8);
+			}
+
+			.back-link {
+				display: inline-block;
+				margin: 20px 0;
+				padding: 15px 30px;
+				background-color: #333;
+				color: #fff;
+				text-decoration: none;
+				border-radius: 8px;
+				transition: all 0.3s ease;
+				font-size: 1.2em;
+			}
+
+			.back-link:hover {
+				background-color: #555;
+				transform: translateY(-2px);
+				box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+			}
+
+			.warning-text {
+				color: #ffeb3b;
+				font-size: 1.5em;
+				margin: 20px 0;
+				text-shadow: 0 0 5px #ffeb3b;
+			}
+
+			/* Custom Pointer Cursor */
+			* {
+				cursor: url('assets/cursors/pointer.png') 8 0, auto;
+			}
+
+			/* Clickable elements cursor */
+			a, button, [onclick], input[type="submit"], input[type="button"] {
+				cursor: url('assets/cursors/click.png') 8 0, pointer;
+			}
+
+			.sound-control {
+				position: fixed;
+				bottom: 20px;
+				right: 20px;
+				background: rgba(0, 0, 0, 0.7);
+				padding: 10px;
+				border-radius: 5px;
+				cursor: pointer;
+				transition: all 0.3s ease;
+				z-index: 9999;
+				pointer-events: auto;
+			}
+
+			.sound-control:hover {
+				background: rgba(0, 0, 0, 0.9);
+			}
+
+			.volume-control {
+				position: fixed;
+				bottom: 20px;
+				right: 80px;
+				background: rgba(0, 0, 0, 0.7);
+				padding: 10px;
+				border-radius: 5px;
+				z-index: 9999;
+			}
+
+			@media (max-width: 768px) {
+				.car-title {
+					font-size: 1.8em;
+				}
+				.warning-text {
+					font-size: 1.2em;
+				}
+				.back-link {
+					font-size: 1em;
+					padding: 12px 24px;
+				}
+				.car-container {
+					padding: 10px;
+					margin: 20px auto;
+				}
+			}
+		</style>
+	</head>
+	<body class="is-loading">
+		<audio id="bgMusic" loop preload="auto" playsinline>
+			<source src="assets/sounds/home.mp3" type="audio/mpeg">
+			Your browser does not support the audio element.
+		</audio>
+		<div class="sound-control" onclick="toggleSound()" title="Toggle Sound">
+			🔊
+		</div>
+		<div class="volume-control">
+			<input type="range" min="0" max="100" value="100" id="volumeSlider" style="width: 100px;" oninput="adjustVolume(this.value)">
+		</div>
+		<div id="wrapper">
+			<div id="main">
+				<div class="inner">
+					<div class="car-container">
+						<h1 class="car-title">🎮 XBOX CAR! 🚗</h1>
+						<img src="assets/images/xBox-car.jpeg" alt="Free Car" class="car-image" />
+						
+						<a href="https://player01ready.com" class="back-link">← Back to Home</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="assets/main.js"></script>
+		<script>
+			let audio = document.getElementById('bgMusic');
+			let soundControl = document.querySelector('.sound-control');
+			let volumeSlider = document.getElementById('volumeSlider');
+			let isPlaying = localStorage.getItem('audioPlaying') === 'true';
+			let volume = localStorage.getItem('audioVolume') || 100;
+
+			// Set initial volume
+			audio.volume = volume / 100;
+			volumeSlider.value = volume;
+
+			// Set initial state
+			if (isPlaying) {
+				soundControl.textContent = '🔊';
+				playAudio();
+			} else {
+				soundControl.textContent = '🔈';
+			}
+
+			function playAudio() {
+				let playPromise = audio.play();
+				if (playPromise !== undefined) {
+					playPromise.then(_ => {
+						console.log('Audio playback started successfully');
+					})
+					.catch(error => {
+						console.error('Error playing audio:', error);
+						soundControl.textContent = '🔈';
+						isPlaying = false;
+						localStorage.setItem('audioPlaying', 'false');
+					});
+				}
+			}
+
+			// Add error handling
+			audio.addEventListener('error', function(e) {
+				console.error('Error loading audio:', e);
+				soundControl.textContent = '🔈';
+				isPlaying = false;
+				localStorage.setItem('audioPlaying', 'false');
+			});
+
+			audio.addEventListener('loadeddata', function() {
+				console.log('Audio loaded successfully');
+				if (isPlaying) {
+					playAudio();
+				}
+			});
+
+			function adjustVolume(value) {
+				audio.volume = value / 100;
+				localStorage.setItem('audioVolume', value);
+			}
+
+			function toggleSound() {
+				if (isPlaying) {
+					audio.pause();
+					soundControl.textContent = '🔈';
+				} else {
+					playAudio();
+					soundControl.textContent = '🔊';
+				}
+				isPlaying = !isPlaying;
+				localStorage.setItem('audioPlaying', isPlaying);
+			}
+
+			// Add keyboard shortcut (Space bar) for toggling sound
+			document.addEventListener('keydown', function(e) {
+				if (e.code === 'Space' && !e.target.matches('input, textarea')) {
+					e.preventDefault();
+					toggleSound();
+				}
+			});
+		</script>
+	</body>
+</html> 
